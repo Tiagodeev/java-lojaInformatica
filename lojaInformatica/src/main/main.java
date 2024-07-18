@@ -1,7 +1,6 @@
 package main;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+import java.io.FileWriter;
 import loja.Periferico;
 import loja.Produto;
 import loja.Cliente;
@@ -19,9 +18,11 @@ public class main {
 		int i = 1;
 		Scanner scr = new Scanner(System.in);
 		CadastroControle loja = new CadastroControle();
-		
+		//FileWriter data =  new ("data.txt");
+
 		do {
 			
+			System.out.println("----------------------------------" );
 			System.out.println("==========Menu Principal==========");
 			System.out.println("----------------------------------" );
 			System.out.println("1: Adicionar Cliente");
@@ -32,7 +33,9 @@ public class main {
 			System.out.println("6: registrar Manutenção");
 			System.out.println("7: mostrar registros de serviços(vendas, manutenções)");
 			System.out.println("8: mostrar dados(clientes, funcionarios, fornecedores, produtos)");
-			System.out.println("9: Salvar");
+			System.out.println("9: Deletar");
+			System.out.println("0: Salvar");
+			
 			System.out.println("\nDigite um numero: ");
 			
 			try {
@@ -41,7 +44,8 @@ public class main {
 			scr.nextLine();
 			
 			switch (i) {
-				case 1:
+			
+				case 1://adicionar cliente
 					System.out.println("nome: ");
 					String clienteNome = scr.nextLine();
 					System.out.println("email: ");
@@ -52,7 +56,8 @@ public class main {
 					loja.addCliente(new Cliente(clienteNome, clienteEmail, clienteTelefone));
 					
 					break;
-				case 2:
+					
+				case 2://adicionar funcionario
 					System.out.println("nome: ");
 					String funcionarioNome = scr.nextLine();
 					System.out.println("cargo: ");
@@ -62,7 +67,8 @@ public class main {
 					
 					loja.addFuncionario(new Funcionario(funcionarioNome, funcionarioCargo, funcionarioContato));
 					break;
-				case 3:
+					
+				case 3://adivionar fornecedor
 					System.out.println("nome: ");
 					String fornecedorNome = scr.nextLine();
 					System.out.println("endereço: ");
@@ -75,7 +81,7 @@ public class main {
 					loja.addFornecedor(new Fornecedor(fornecedorNome, fornecedorEndereco, fornecedorEmail, fornecedorTelefone));
 					break;
 					
-				case 4:
+				case 4://adicionar produto
 					System.out.println("nome: ");
 					String produtoNome = scr.nextLine();
 					System.out.println("marca: ");
@@ -86,9 +92,9 @@ public class main {
 					int produtoQuant = scr.nextInt();
 					scr.nextLine();
 					
-					System.out.println("fornecedor [Numero]: ");
+					System.out.println("fornecedor [Numero]: \n");
 					for (int n = 0; n <loja.getFornecedores().size(); n++) {
-						System.out.println("\n" + (n + 1) + " = " + loja.getFornecedores().get(n).getNome());
+						System.out.println((n + 1) + " = " + loja.getFornecedores().get(n).getNome());
 					}
 					int indexFornecedor = scr.nextInt() - 1;
 					scr.nextLine();
@@ -120,26 +126,23 @@ public class main {
 					
 				case 5://realizar venda
 					
-					System.out.println("cliente [Numero]: ");
-					System.out.println("\n");
+					System.out.println("cliente [Numero]: \n");
 					for (int n = 0; n <loja.getClientes().size(); n++) {
 						System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
 					}
 					int indexCliente = scr.nextInt() - 1;
 					scr.nextLine();
 						
-			        System.out.print("Escolha o funcionário [número]: ");
-			        System.out.println("\n");
+			        System.out.print("Escolha o funcionário [número]: \n");
 			        for (int n = 0; n <loja.getFuncionarios().size(); n++) {
-			        	System.out.println("\n" + (n + 1) + " = " + loja.getFuncionarios().get(n).getNome());
+			        	System.out.println((n + 1) + " = " + loja.getFuncionarios().get(n).getNome());
 			        }
 			        int indexFuncionario = scr.nextInt() - 1;
 			        scr.nextLine();
 					
-			        System.out.print("Escolha o produto [número]: ");
-			        System.out.println("\n");
+			        System.out.print("Escolha o produto [número]: \n");
 			        for (int n = 0; n < loja.getProdutos().size(); n++) {
-			        	System.out.println("\n" + (n + 1) + " = " + loja.getProdutos().get(n).getNome());
+			        	System.out.println((n + 1) + " = " + loja.getProdutos().get(n).getNome());
 			        }
 			        int indexProduto = scr.nextInt() - 1;
 			        scr.nextLine();
@@ -147,7 +150,15 @@ public class main {
 			        System.out.println("digite a quantidade: ");
 			        int quant = scr.nextInt();
 			        scr.nextLine();
-
+			        
+			        do {
+			        	
+			        	System.out.println("quantidade incorreta, digite a quantidade: ");
+			        	quant = scr.nextInt();
+				        scr.nextLine();
+				        
+			        } while(loja.getProdutos().get(indexProduto).getQuantidade() < quant);
+			        
 			        Cliente cliente = loja.getClientes().get(indexCliente);
 			        Funcionario funcionario = loja.getFuncionarios().get(indexFuncionario);
 			        Produto produto = loja.getProdutos().get(indexProduto);
@@ -158,24 +169,21 @@ public class main {
 			        
 					break;
 					
-				case 6://manutenção
-					System.out.println("cliente [Numero]: ");
-					System.out.println("\n");
-					for (int n = 0; n <loja.getClientes().size(); n++) {
+				case 6://realizar manutenção
+					System.out.println("cliente [Numero]: \n");
+					
+					for (int n = 0; n <loja.getClientes().size(); n++) {//exibe uma lista com os nomes disponiveis
 						System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
 					}
 					int manutencCliente = scr.nextInt() - 1;
 					scr.nextLine();
-					//int manutencCliente = Integer.parseInt(scr.nextLine()) - 1;
 					
-					System.out.print("Escolha o funcionário [número]: ");
-			        System.out.println("\n");
+					System.out.print("Escolha o funcionário [número]: \n");
 			        for (int n = 0; n <loja.getFuncionarios().size(); n++) {
-			        	System.out.println("\n" + (n + 1) + " = " + loja.getFuncionarios().get(n).getNome());
+			        	System.out.println((n + 1) + " = " + loja.getFuncionarios().get(n).getNome());
 			        }
 			        int manutencFuncionario = scr.nextInt() - 1;
 			        scr.nextLine();
-			        //int manutencFuncionario = Integer.parseInt(scr.nextLine()) - 1;
 					
 			        System.out.println("descrição: ");
 			        String manutencDesc= scr.nextLine();
@@ -190,10 +198,10 @@ public class main {
 					break;
 					
 				case 7://registros de serviços
-					System.out.println("/n---Vendas---");
+					System.out.println("\n ---Vendas---");
 					
 					loja.printVendas();
-					System.out.println("/n---manutencoes---");
+					System.out.println("\n ---manutencoes---");
 					loja.printManutencao();
 					break;
 					
@@ -208,20 +216,90 @@ public class main {
 					loja.printProdutos();
 					break;
 					
-				case 9:
-					loja.saveCadastros();
-					break;
+				case 9://deletar arquivos
 					
-				default:
-					System.out.println("Opção inválida!");
+					System.out.println("1: deletar cliente");
+					System.out.println("2: deletar funcionario");
+					System.out.println("3: deletar fornecedor");
+					System.out.println("4: deletar produto");
+			
+					int a = scr.nextInt();
+					scr.nextLine();
+					
+					switch (a) {
+					
+						case 1:
+							System.out.println("cliente [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getClientes().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
+							}
+							int indCliente = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							loja.getClientes().remove(indCliente);
+							
+							break;
+							
+						case 2:
+							System.out.println("funcionario [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getFuncionarios().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getFuncionarios().get(n).getNome());
+							}
+							int indFuncionario = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							loja.getFuncionarios().remove(indFuncionario);
+							
+							break;
+							
+						case 3:
+							
+							System.out.println("fornecedor [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getFornecedores().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getFornecedores().get(n).getNome());
+							}
+							int indFornecedor = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							loja.getFornecedores().remove(indFornecedor);
+							
+							break;
+							
+						case 4:
+							System.out.println("produto [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getProdutos().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getProdutos().get(n).getNome());
+							}
+							int indProduto = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							loja.getProdutos().remove(indProduto);
+							
+							break;
+						
+						}
+						
+						break;
+						
+					case 0://salvar arquivos
+						loja.saveCadastros();
+						break;
+						
+					default:
+						System.out.println("Opção inválida!");
 			}
 			
 		}catch (InputMismatchException e) {
             System.out.println("Opção inválida!");
             scr.next();
+            
 		}
 			
-		}while(i != 0);
+		}while(i < 10);
 		
 		scr.close();
 	}

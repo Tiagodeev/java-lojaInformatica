@@ -1,7 +1,7 @@
 package loja;
 import java.io.Serializable;
 
-public class Produto implements Serializable {
+public abstract class Produto implements Serializable {
 
 	protected String nome;
 	protected String marca;

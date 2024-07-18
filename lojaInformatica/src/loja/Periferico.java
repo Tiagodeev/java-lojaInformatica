@@ -35,6 +35,6 @@ public class Periferico extends Produto{
 	
 	@Override
     public String toString() {
-    	return "nome: " + nome + ", "+ "marca: " + marca + ", " + "valor: " + valor + ", " + "quantidade: " + quantidade + "Tipo: " + tipo + ", " + "entrada: " + compatibilidade;
+    	return "nome: " + nome + ", "+ "marca: " + marca + ", " + "valor: " + valor + ", " + "quantidade: " + quantidade + ", " + "Tipo: " + tipo + ", " + "entrada: " + compatibilidade;
     }
 }

@@ -32,6 +32,6 @@ public class Componente extends Produto {
 	
     @Override
     public String toString() {
-    	return "nome: " + nome + ", "+ "marca: " + marca + ", " + "valor: " + valor + ", " + "quantidade: " + quantidade + "especificação: " + especificacao + ", " + "fabricante: " + fabricante;
+    	return "nome: " + nome + ", "+ "marca: " + marca + ", " + "valor: " + valor + ", " + "quantidade: " + quantidade + ", " + "especificação: " + especificacao + ", " + "fabricante: " + fabricante;
     }
 }
