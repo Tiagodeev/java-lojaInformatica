@@ -1,0 +1,6 @@
+[Vendas]
+cliente: tiago, funcionario: felipe, produto: teclado rgb, valor: 80.0
+cliente: Marcos, funcionario: felipe, produto: teclado rgb, valor: 40.0
+
+[manutenções]
+cliente: Marcos, funcionario: maria, valor: 50.0

@@ -1,6 +1,5 @@
 package main;
 import java.util.Scanner;
-import java.io.FileWriter;
 import loja.Periferico;
 import loja.Produto;
 import loja.Cliente;
@@ -18,7 +17,7 @@ public class main {
 		int i = 1;
 		Scanner scr = new Scanner(System.in);
 		CadastroControle loja = new CadastroControle();
-		//FileWriter data =  new ("data.txt");
+		
 
 		do {
 			
@@ -31,8 +30,8 @@ public class main {
 			System.out.println("4: adicionar Produto");
 			System.out.println("5: registrar Venda");
 			System.out.println("6: registrar Manutenção");
-			System.out.println("7: mostrar registros de serviços(vendas, manutenções)");
-			System.out.println("8: mostrar dados(clientes, funcionarios, fornecedores, produtos)");
+			System.out.println("7: registrar serviços em um arquivo");
+			System.out.println("8: mostrar dados salvos ");
 			System.out.println("9: Deletar");
 			System.out.println("0: Salvar");
 			
@@ -54,6 +53,7 @@ public class main {
 					String clienteTelefone = scr.nextLine();
 					
 					loja.addCliente(new Cliente(clienteNome, clienteEmail, clienteTelefone));
+					System.out.println("cadastro realizado!");
 					
 					break;
 					
@@ -66,6 +66,8 @@ public class main {
 					String funcionarioContato = scr.nextLine();
 					
 					loja.addFuncionario(new Funcionario(funcionarioNome, funcionarioCargo, funcionarioContato));
+					System.out.println("cadastro realizado!");
+					
 					break;
 					
 				case 3://adivionar fornecedor
@@ -79,6 +81,8 @@ public class main {
 					String fornecedorTelefone = scr.nextLine();
 					
 					loja.addFornecedor(new Fornecedor(fornecedorNome, fornecedorEndereco, fornecedorEmail, fornecedorTelefone));
+					System.out.println("cadastro realizado!");
+					
 					break;
 					
 				case 4://adicionar produto
@@ -122,16 +126,21 @@ public class main {
 						
 						loja.addProduto(new Periferico(produtoNome, produtoMarca, produtoValor, produtoQuant, fornecedor, produtoTipo, produtoCompat));
 					}
+					
+					System.out.println("produto registrado!");
+					
 					break;
 					
 				case 5://realizar venda
 					
-					System.out.println("cliente [Numero]: \n");
+					System.out.println("Escolha o cliente [Numero]: \n");
 					for (int n = 0; n <loja.getClientes().size(); n++) {
 						System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
 					}
+				
 					int indexCliente = scr.nextInt() - 1;
 					scr.nextLine();
+					
 						
 			        System.out.print("Escolha o funcionário [número]: \n");
 			        for (int n = 0; n <loja.getFuncionarios().size(); n++) {
@@ -151,30 +160,55 @@ public class main {
 			        int quant = scr.nextInt();
 			        scr.nextLine();
 			        
-			        do {
-			        	
-			        	System.out.println("quantidade incorreta, digite a quantidade: ");
-			        	quant = scr.nextInt();
-				        scr.nextLine();
-				        
-			        } while(loja.getProdutos().get(indexProduto).getQuantidade() < quant);
+			        //checa se a quantidade solicitada esta disponivel
+			        
+			        if (loja.getProdutos().get(indexProduto).getQuantidade() < quant) {
+			        
+				        do {
+				        	
+				        	System.out.println("quantidade incorreta, digite a quantidade: ");
+				        	quant = scr.nextInt();
+					        scr.nextLine();
+					        
+				        } while(loja.getProdutos().get(indexProduto).getQuantidade() < quant);
+				    }
+			        
+			        try {
 			        
 			        Cliente cliente = loja.getClientes().get(indexCliente);
 			        Funcionario funcionario = loja.getFuncionarios().get(indexFuncionario);
 			        Produto produto = loja.getProdutos().get(indexProduto);
+			        float valor = loja.getProdutos().get(indexProduto).getValor()*quant;
 
-			        loja.registrarVenda(new Venda(cliente, funcionario, produto));
+			        loja.registrarVenda(new Venda(cliente, funcionario, produto, valor));
 			        
 			        produto.setQuantidade(produto.getQuantidade() - quant);
+			        
+			        
+			        //apaga o produto da lista caso nao tenha quantidade
+			        if (produto.getQuantidade() == 0) {
+			        	loja.getProdutos().remove(indexProduto);
+			        	System.out.println("produto esgotado apos a compra\n");
+			        	}
+			        
+			        System.out.println("venda registrada com sucesso!");
+			        
+			        }catch(IndexOutOfBoundsException e) {
+			        	System.out.println("erro, verifique os numeros digitados e tente novamente");
+			        }
 			        
 					break;
 					
 				case 6://realizar manutenção
-					System.out.println("cliente [Numero]: \n");
+					
+					System.out.println("escolha o cliente [Numero]: \n");
 					
 					for (int n = 0; n <loja.getClientes().size(); n++) {//exibe uma lista com os nomes disponiveis
 						System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
 					}
+					
+					
+					
 					int manutencCliente = scr.nextInt() - 1;
 					scr.nextLine();
 					
@@ -191,29 +225,49 @@ public class main {
 			        System.out.println("valor");
 					float manutencValor = scr.nextFloat();
 			        
-			        Cliente mcliente = loja.getClientes().get(manutencCliente);
-			        Funcionario mfuncionario = loja.getFuncionarios().get(manutencFuncionario);
-
-			        loja.registrarManutenc(new Manutencao(mcliente, mfuncionario, manutencDesc, manutencValor));
+					try {
+					
+				        Cliente mcliente = loja.getClientes().get(manutencCliente);
+				        Funcionario mfuncionario = loja.getFuncionarios().get(manutencFuncionario);
+	
+				        loja.registrarManutenc(new Manutencao(mcliente, mfuncionario, manutencDesc, manutencValor));
+						
+				        System.out.println("manutenção registrada com sucesso!");
+				        
+			        }catch (IndexOutOfBoundsException e) {
+			        	System.out.println("erro, verifique os numeros digitados e tente novamente");
+			        }
+			        
+			        break;
+					
+				case 7://escreve um relatorio de serviços
+					
+					loja.escreverRegistros();
+					
+				    System.out.println("Texto salvo com sucesso!");
+					
 					break;
 					
-				case 7://registros de serviços
-					System.out.println("\n ---Vendas---");
+				case 8://mostra os dados salvos
 					
-					loja.printVendas();
-					System.out.println("\n ---manutencoes---");
-					loja.printManutencao();
-					break;
-					
-				case 8:
 					System.out.println("\nClientes");
 					loja.printClientes();
+					
 					System.out.println("\nFuncionarios");
 					loja.printFuncionarios();
+					
 					System.out.println("\nFornecedores");
 					loja.printFornecedores();
+					
 					System.out.println("\nProdutos");
 					loja.printProdutos();
+					
+					System.out.println("\n ---Vendas---");
+					loja.printVendas();
+					
+					System.out.println("\n ---manutencoes---");
+					loja.printManutencao();
+					
 					break;
 					
 				case 9://deletar arquivos
@@ -222,6 +276,8 @@ public class main {
 					System.out.println("2: deletar funcionario");
 					System.out.println("3: deletar fornecedor");
 					System.out.println("4: deletar produto");
+					System.out.println("5: deletar registro de venda");
+					System.out.println("6: deletar registro de manutenção");
 			
 					int a = scr.nextInt();
 					scr.nextLine();
@@ -234,10 +290,20 @@ public class main {
 							for (int n = 0; n <loja.getClientes().size(); n++) {
 								System.out.println((n + 1) + " = " + loja.getClientes().get(n).getNome());
 							}
+							
+							
 							int indCliente = scr.nextInt() - 1;
 							scr.nextLine();
 							
-							loja.getClientes().remove(indCliente);
+							try {
+							
+								loja.getClientes().remove(indCliente);
+								System.out.println("deletado com sucesso!");
+								
+							}catch (IndexOutOfBoundsException e) {
+								
+					        	System.out.println("erro, opção invalida");
+					        }
 							
 							break;
 							
@@ -250,7 +316,14 @@ public class main {
 							int indFuncionario = scr.nextInt() - 1;
 							scr.nextLine();
 							
-							loja.getFuncionarios().remove(indFuncionario);
+							try {
+							
+								loja.getFuncionarios().remove(indFuncionario);
+								System.out.println("deletado com sucesso!");
+							
+							}catch (IndexOutOfBoundsException e) {
+					        	System.out.println("erro, opção invalida");
+					        }
 							
 							break;
 							
@@ -264,7 +337,14 @@ public class main {
 							int indFornecedor = scr.nextInt() - 1;
 							scr.nextLine();
 							
-							loja.getFornecedores().remove(indFornecedor);
+							try {
+								
+								loja.getFornecedores().remove(indFornecedor);
+								System.out.println("deletado com sucesso!");
+								
+							}catch (IndexOutOfBoundsException e) {
+					        	System.out.println("erro, opção invalida");
+					        }
 							
 							break;
 							
@@ -277,13 +357,57 @@ public class main {
 							int indProduto = scr.nextInt() - 1;
 							scr.nextLine();
 							
-							loja.getProdutos().remove(indProduto);
+							try {
+								
+								loja.getProdutos().remove(indProduto);
+								System.out.println("deletado com sucesso!");
+								
+							}catch (IndexOutOfBoundsException e) {
+					        	System.out.println("erro, opção invalida");
+					        }
+							
+							break;
+							
+						case 5:
+							System.out.println("vendas [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getVendas().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getProdutos().get(n));
+							}
+							int indVenda = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							try {
+								loja.getVendas().remove(indVenda);
+								System.out.println("deletado com sucesso!");
+								
+							}catch (IndexOutOfBoundsException e) {
+					        	System.out.println("erro, opção invalida");
+					        }
+								
+							break;
+							
+						case 6:
+							
+							System.out.println("manutençãoes [Numero]: ");
+							System.out.println("\n");
+							for (int n = 0; n <loja.getManutencoes().size(); n++) {
+								System.out.println((n + 1) + " = " + loja.getManutencoes().get(n));
+							}
+							int indManutencao = scr.nextInt() - 1;
+							scr.nextLine();
+							
+							try {
+								loja.getManutencoes().remove(indManutencao);
+								System.out.println("deletado com sucesso!");
+								
+							}catch (IndexOutOfBoundsException e) {
+					        	System.out.println("erro, opção invalida");
+					        }
 							
 							break;
 						
 						}
-						
-						break;
 						
 					case 0://salvar arquivos
 						loja.saveCadastros();
@@ -293,7 +417,7 @@ public class main {
 						System.out.println("Opção inválida!");
 			}
 			
-		}catch (InputMismatchException e) {
+		}catch (InputMismatchException e){
             System.out.println("Opção inválida!");
             scr.next();
             

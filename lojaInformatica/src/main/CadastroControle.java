@@ -6,11 +6,15 @@ import loja.Produto;
 import services.Venda;
 import services.Manutencao;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.*;
 import java.util.ArrayList;
 
 public class CadastroControle {
-
+	
+	
 	//Arquivos
 	private static final String clientes_file = "Clientes.dat";
 	private static final String funcionarios_file = "Funcionarios.dat";
@@ -18,6 +22,8 @@ public class CadastroControle {
 	private static final String produtos_file = "Produtos.dat";
 	private static final String vendas_file = "vendas.dat";
 	private static final String manutenc_file = "manutenc.dat";
+	
+	File arquivo = new File("registroFinanceiro.txt");
 
 	//Arraylists
 	private ArrayList<Cliente> clientes;
@@ -69,6 +75,16 @@ public class CadastroControle {
 
 	public ArrayList<Produto> getProdutos() {
 		return produtos;
+	}
+
+	
+	
+	public ArrayList<Venda> getVendas() {
+		return vendas;
+	}
+
+	public ArrayList<Manutencao> getManutencoes() {
+		return manutencoes;
 	}
 
 	public void registrarVenda(Venda venda) {
@@ -166,6 +182,43 @@ public class CadastroControle {
             System.out.println(venda);
         }
     }
+    
+    
+    
+    public void escreverRegistros() { //escreve em um arquivo
+    	
+    	try (FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw)) {
+
+            // Escreve cada linha do ArrayList no arquivo
+    		bw.write("[Vendas]");
+    		bw.newLine();
+    		
+    		for (Venda venda : vendas) {
+                
+    				bw.write(venda.toString());
+    				bw.newLine();
+               }
+
+    		bw.newLine();
+    		bw.write("[manutenções]");
+    		bw.newLine();
+    		
+    		for (Manutencao manutencao : manutencoes) {
+    			
+				bw.write(manutencao.toString());
+				bw.newLine();
+                
+    		}
+    		
+    		
+            System.out.println("dados salvo com sucesso no arquivo!");
+
+           } catch (IOException e) {
+               System.err.println("Erro ao salvar o ArrayList no arquivo: " + e.getMessage());
+        }
+    }
+    
     
     public void printManutencao() {
         for (Manutencao manutencao : manutencoes) {

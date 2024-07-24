@@ -10,6 +10,7 @@ public class Venda implements Serializable{
     private Cliente cliente;
     private Funcionario funcionario;
     private Produto produto;
+    private float valor;
     
 	public Cliente getCliente() {
 		return cliente;
@@ -35,15 +36,16 @@ public class Venda implements Serializable{
 		this.produto = produtos;
 	}
 
-	public Venda(Cliente cliente, Funcionario funcionario, Produto produto) {
+	public Venda(Cliente cliente, Funcionario funcionario, Produto produto, float valor) {
 		this.cliente = cliente;
 		this.funcionario = funcionario;
 		this.produto = produto;
+		this.valor = valor;
 	}
 	
     @Override
     public String toString() {
-    	return "cliente: " + cliente.getNome()+ ", "+ "funcionario: " + funcionario.getNome() + ", " + "produto: " + produto.getNome();
+    	return "cliente: " + cliente.getNome()+ ", "+ "funcionario: " + funcionario.getNome() + ", " + "produto: " + produto.getNome() + ", " + "valor: " + valor;
     }
 	
 }
