@@ -21,7 +21,7 @@ public class main {
 
 		do {
 			
-			System.out.println("----------------------------------" );
+			System.out.println("\n----------------------------------" );
 			System.out.println("==========Menu Principal==========");
 			System.out.println("----------------------------------" );
 			System.out.println("1: Adicionar Cliente");

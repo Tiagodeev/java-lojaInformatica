@@ -1,6 +1,10 @@
 [Vendas]
 cliente: tiago, funcionario: felipe, produto: teclado rgb, valor: 80.0
 cliente: Marcos, funcionario: felipe, produto: teclado rgb, valor: 40.0
+cliente: Marcos, funcionario: joão santos, produto: teclado mecanico, valor: 80.0
+cliente: Marcos, funcionario: joão santos, produto: mouse rgb, valor: 40.0
 
 [manutenções]
-cliente: Marcos, funcionario: maria, valor: 50.0
+cliente: carlos, funcionario: joão santos, valor: 20.0
+cliente: Marcos, funcionario: felipe, valor: 100.0
+cliente: tiago, funcionario: felipe, valor: 80.0
