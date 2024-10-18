@@ -1,7 +1,7 @@
-package clinica;
+package model;
 import java.util.Date;
 
-import clinica.Funcionario.Veterinario;
+import model.Funcionario.Veterinario;
 
 public class Servico {
 	
@@ -22,8 +22,6 @@ public class Servico {
 			this.data = data;
 		}
 	}
-	
-	
 	
 	class consulta extends ServicoPadrao{
 		
@@ -49,7 +47,7 @@ public class Servico {
 			public vacinacao(String tipo, String descricao, float preco, Animal animal, Veterinario veterinario, Date data) {
 				super("vacinacao", descricao, preco, animal, veterinario, data);
 					
-				}
+			}
 	}
 	
 	class exame extends ServicoPadrao{

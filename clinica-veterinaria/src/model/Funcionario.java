@@ -1,4 +1,6 @@
-package clinica;
+package model;
+
+import general.Clinica;
 
 public class Funcionario {
 	
@@ -17,6 +19,9 @@ public class Funcionario {
 			this.cargo = cargo;
 		}
 
+		public void verAgenda() {
+		};
+		
 		//getters e setters
 		public String getNome() {
 			return nome;
@@ -64,6 +69,19 @@ public class Funcionario {
 			
 		}
 		
+		public void realizarServiço() {};
+		public void agendarServiço() {};
+		public void criarReceitaMedica() {};
+		public void verAgenda() {};
+		
+		//getters e setters
+		public String getCrm() {
+			return crm;
+		}
+
+		public void setCrm(String crm) {
+			this.crm = crm;
+		}
 	}
 	
 	////////===ATENDENTE===/////////
@@ -73,7 +91,10 @@ public class Funcionario {
 		public Atendente(String nome, String telefone, String email) {
 	        super(nome, telefone, email, "Atendente");
 	    }
-	
+		
+		public void cadastrarCliente() {};
+		public void cadastrarAnimal() {};
+		
 	}
 	
 	////////===ADMINISTRADOR===/////////
@@ -84,6 +105,12 @@ public class Funcionario {
 			super(nome, telefone, email, "Administrador");
 		}
 		
+		public void getRegistroFinanceiro() {
+			System.out.println("registros financeiros");
+		};
+		public void verAgenda() {
+			System.out.println("Agenda de serviços");
+		};
 	}
 
 }
